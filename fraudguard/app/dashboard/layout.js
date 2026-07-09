@@ -35,15 +35,15 @@ function SidebarNav({ onClose }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 8px' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
-            background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+            background: 'var(--accent-burgundy)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(56,189,248,0.3)',
+            boxShadow: '0 0 16px var(--accent-burgundy-glow)',
           }}>
             <Shield size={18} color="#fff" />
           </div>
           <div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: '#F4F6FB', lineHeight: 1 }}>FraudGuard</div>
-            <div style={{ fontSize: 10, color: '#38BDF8', fontWeight: 500, letterSpacing: '0.08em' }}>AI PLATFORM</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>FraudGuard</div>
+            <div style={{ fontSize: 10, color: 'var(--accent-burgundy)', fontWeight: 500, letterSpacing: '0.08em' }}>AI PLATFORM</div>
           </div>
         </div>
       </Link>
@@ -61,28 +61,16 @@ function SidebarNav({ onClose }) {
                   alignItems: 'center',
                   gap: 10,
                   padding: '10px 12px',
-                  borderRadius: 8,
-                  background: isActive ? 'rgba(56,189,248,0.1)' : 'transparent',
-                  border: isActive ? '1px solid rgba(56,189,248,0.2)' : '1px solid transparent',
-                  color: isActive ? '#38BDF8' : '#8B93A8',
+                  borderRadius: '0 8px 8px 0',
+                  background: isActive ? 'rgba(109,0,26,0.15)' : 'transparent',
+                  borderLeft: isActive ? '3px solid var(--accent-burgundy)' : '3px solid transparent',
+                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                 }}
               >
-                <Icon size={16} />
+                <Icon size={16} color={isActive ? 'var(--accent-burgundy)' : 'inherit'} />
                 <span style={{ fontSize: 13, fontWeight: isActive ? 600 : 400 }}>{label}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    style={{
-                      marginLeft: 'auto',
-                      width: 4, height: 4,
-                      borderRadius: '50%',
-                      background: '#38BDF8',
-                      boxShadow: '0 0 6px #38BDF8',
-                    }}
-                  />
-                )}
               </motion.div>
             </Link>
           );
@@ -92,14 +80,14 @@ function SidebarNav({ onClose }) {
       {/* Bottom info */}
       <div style={{
         padding: '12px',
-        background: '#161D30',
-        border: '1px solid #232B42',
+        background: 'var(--bg-tertiary)',
+        border: '1px solid var(--border-subtle)',
         borderRadius: 10,
         fontSize: 11,
-        color: '#8B93A8',
+        color: 'var(--text-secondary)',
         lineHeight: 1.6,
       }}>
-        <div style={{ color: '#38BDF8', fontWeight: 600, marginBottom: 4 }}>Model v1.2</div>
+        <div style={{ color: 'var(--accent-burgundy)', fontWeight: 600, marginBottom: 4 }}>Model v1.2</div>
         <div>Edge Region: BOM1</div>
         <div>Accuracy: 94.2%</div>
         <div>Threshold: {threshold}</div>
@@ -113,13 +101,13 @@ export default function DashboardLayout({ children }) {
   const isLive = useStore(s => s.isLive);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#0A0E1A' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Desktop sidebar */}
       <aside style={{
         width: 220,
         flexShrink: 0,
-        background: '#0F1524',
-        borderRight: '1px solid #232B42',
+        background: 'var(--bg-secondary)',
+        borderRight: '1px solid var(--border-subtle)',
         position: 'sticky',
         top: 0,
         height: '100vh',
@@ -140,8 +128,8 @@ export default function DashboardLayout({ children }) {
         {/* Top bar */}
         <header style={{
           padding: '12px 24px',
-          background: '#0F1524',
-          borderBottom: '1px solid #232B42',
+          background: 'var(--bg-secondary)',
+          borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
@@ -174,7 +162,7 @@ export default function DashboardLayout({ children }) {
 
           {/* Right info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Wifi size={14} color="#38BDF8" />
+            <Wifi size={14} color="var(--accent-burgundy)" />
             <span style={{ fontSize: 11, color: '#8B93A8' }}>Sub-10ms inference</span>
           </div>
         </header>
@@ -186,8 +174,8 @@ export default function DashboardLayout({ children }) {
 
         {/* Mobile bottom nav */}
         <nav style={{
-          background: '#0F1524',
-          borderTop: '1px solid #232B42',
+          background: 'var(--bg-secondary)',
+          borderTop: '1px solid var(--border-subtle)',
           padding: '8px 0',
           display: 'flex',
           justifyContent: 'space-around',

@@ -29,8 +29,8 @@ export function KpiCard({ title, value, prefix = '', suffix = '', subtitle, icon
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       style={{
-        background: '#0F1524',
-        border: '1px solid #232B42',
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-subtle)',
         borderRadius: 12,
         padding: '20px 24px',
         display: 'flex',
@@ -57,12 +57,12 @@ export function KpiCard({ title, value, prefix = '', suffix = '', subtitle, icon
         </span>
         {Icon && (
           <div style={{
-            background: glowColor ? `${glowColor}18` : 'rgba(56,189,248,0.1)',
-            border: `1px solid ${glowColor ? `${glowColor}30` : 'rgba(56,189,248,0.2)'}`,
+            background: glowColor ? `${glowColor}18` : 'rgba(109,0,26,0.1)',
+            border: `1px solid ${glowColor ? `${glowColor}30` : 'rgba(109,0,26,0.2)'}`,
             borderRadius: 8,
             padding: 8,
           }}>
-            <Icon size={16} color={glowColor || '#38BDF8'} />
+            <Icon size={16} color={glowColor || 'var(--accent-burgundy)'} />
           </div>
         )}
       </div>
@@ -168,7 +168,7 @@ export function ScoreGauge({ score, size = 200 }) {
     <div style={{ position: 'relative', width: size, height: size * 0.6, margin: '0 auto' }}>
       <svg width={size} height={size * 0.65} style={{ overflow: 'visible' }}>
         {/* Track */}
-        <path d={trackPath} fill="none" stroke="#232B42" strokeWidth={strokeWidth} strokeLinecap="round" />
+        <path d={trackPath} fill="none" stroke="var(--border-subtle)" strokeWidth={strokeWidth} strokeLinecap="round" />
         
         {/* Score arc */}
         <motion.path
@@ -220,7 +220,7 @@ export function SkeletonLoader({ width = '100%', height = 16, rounded = 8, class
       style={{
         width,
         height,
-        background: '#232B42',
+        background: 'var(--border-subtle)',
         borderRadius: rounded,
       }}
       className={className}
@@ -273,9 +273,9 @@ export function ExportButton({ data, filename = 'export.csv' }) {
       disabled={isExporting || !data || data.length === 0}
       style={{
         display: 'flex', alignItems: 'center', gap: 6,
-        background: '#161D30',
-        border: '1px solid #232B42',
-        color: '#F4F6FB',
+        background: 'var(--bg-tertiary)',
+        border: '1px solid var(--border-subtle)',
+        color: 'var(--text-primary)',
         padding: '6px 12px',
         borderRadius: 8,
         fontSize: 12,
@@ -286,14 +286,14 @@ export function ExportButton({ data, filename = 'export.csv' }) {
       }}
       onMouseOver={(e) => {
         if (!isExporting && data && data.length > 0) {
-          e.currentTarget.style.background = '#232B42';
-          e.currentTarget.style.borderColor = '#38BDF8';
+          e.currentTarget.style.background = 'var(--bg-tertiary)';
+          e.currentTarget.style.borderColor = 'var(--accent-burgundy)';
         }
       }}
       onMouseOut={(e) => {
         if (!isExporting && data && data.length > 0) {
-          e.currentTarget.style.background = '#161D30';
-          e.currentTarget.style.borderColor = '#232B42';
+          e.currentTarget.style.background = 'var(--bg-tertiary)';
+          e.currentTarget.style.borderColor = 'var(--border-subtle)';
         }
       }}
     >

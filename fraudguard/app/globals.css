@@ -1,22 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-primary: #0A0E1A;
-  --bg-secondary: #0F1524;
-  --bg-tertiary: #161D30;
-  --border-subtle: #232B42;
-  --text-primary: #F4F6FB;
-  --text-secondary: #8B93A8;
-  --accent-sky: #38BDF8;
-  --accent-blue: #3B82F6;
-  --risk-safe: #22C55E;
-  --risk-medium: #F59E0B;
-  --risk-high: #EF4444;
-  --risk-critical: #DC2626;
+  --bg-primary: #0A0A0A;        /* true near-black background */
+  --bg-secondary: #131111;      /* card background, faint warm undertone */
+  --bg-tertiary: #1C1717;       /* elevated card / hover state */
+  --border-subtle: #2A2222;     /* warm dark border, not cool grey */
+
+  --text-primary: #FFFFFF;      /* pure white headlines */
+  --text-secondary: #A69C9C;    /* warm muted grey for body/labels */
+
+  --accent-burgundy: #6D001A;   /* primary brand accent */
+  --accent-burgundy-bright: #8C0022; /* hover/active state, slightly lifted */
+  --accent-burgundy-glow: rgba(109, 0, 26, 0.35); /* for glows/shadows */
+
+  --risk-safe: #22C55E;         /* keep green for APPROVE */
+  --risk-medium: #E8A33D;       /* warm amber */
+  --risk-high: #FF3B3B;         /* true red for BLOCK */
+  --risk-critical: #FF1F1F;
 }
 
 * {
@@ -28,7 +30,7 @@
 html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -51,12 +53,12 @@ html, body {
 
 /* Mono font utility */
 .font-mono {
-  font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono), monospace;
 }
 
 /* Glow effects */
-.glow-sky {
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+.glow-burgundy {
+  box-shadow: 0 0 20px var(--accent-burgundy-glow);
 }
 .glow-red {
   box-shadow: 0 0 20px rgba(220, 38, 38, 0.25);
@@ -104,7 +106,7 @@ html, body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #38BDF8, #3B82F6);
+  background: linear-gradient(135deg, #8C0022, #C94F63);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -124,8 +126,8 @@ input, select, textarea {
   transition: border-color 0.2s;
 }
 input:focus, select:focus, textarea:focus {
-  border-color: var(--accent-sky) !important;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+  border-color: var(--accent-burgundy) !important;
+  box-shadow: 0 0 0 3px var(--accent-burgundy-glow);
 }
 select option {
   background: var(--bg-tertiary);
@@ -158,5 +160,5 @@ select option {
   transition: background 0.2s;
 }
 .toggle-track.active {
-  background: var(--accent-sky);
+  background: var(--accent-burgundy);
 }

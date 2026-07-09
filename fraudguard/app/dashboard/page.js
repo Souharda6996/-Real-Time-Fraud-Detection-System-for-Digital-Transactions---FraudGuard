@@ -27,8 +27,8 @@ function LiveFeedRow({ txn, isNew }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       style={{
-        background: expanded ? '#161D30' : 'transparent',
-        border: `1px solid ${expanded ? '#232B42' : 'transparent'}`,
+        background: expanded ? 'var(--bg-tertiary)' : 'transparent',
+        border: `1px solid ${expanded ? 'var(--border-subtle)' : 'transparent'}`,
         borderRadius: 10,
         marginBottom: 2,
         overflow: 'hidden',
@@ -36,7 +36,7 @@ function LiveFeedRow({ txn, isNew }) {
         cursor: 'pointer',
       }}
       onClick={() => setExpanded(v => !v)}
-      whileHover={{ backgroundColor: '#0F1524' }}
+      whileHover={{ backgroundColor: 'var(--bg-secondary)' }}
     >
       {/* Main row */}
       <div style={{
@@ -50,7 +50,7 @@ function LiveFeedRow({ txn, isNew }) {
         <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{
-              fontSize: 11, color: '#38BDF8', fontFamily: 'JetBrains Mono, monospace',
+              fontSize: 11, color: 'var(--accent-burgundy)', fontFamily: 'var(--font-mono), monospace',
               whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               maxWidth: 140,
             }}>
@@ -79,7 +79,7 @@ function LiveFeedRow({ txn, isNew }) {
         {/* Score */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
           <div style={{
-            width: 32, height: 4, borderRadius: 2, background: '#232B42', overflow: 'hidden',
+            width: 32, height: 4, borderRadius: 2, background: 'var(--border-subtle)', overflow: 'hidden',
           }}>
             <div style={{
               width: `${txn.score}%`, height: '100%',
@@ -114,7 +114,7 @@ function LiveFeedRow({ txn, isNew }) {
             transition={{ duration: 0.25 }}
             style={{ overflow: 'hidden' }}
           >
-            <div style={{ padding: '0 12px 12px', borderTop: '1px solid #232B42', paddingTop: 12, marginTop: 0 }}>
+            <div style={{ padding: '0 12px 12px', borderTop: '1px solid var(--border-subtle)', paddingTop: 12, marginTop: 0 }}>
               <div style={{ fontSize: 11, color: '#8B93A8', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Decision Breakdown
               </div>
@@ -123,21 +123,21 @@ function LiveFeedRow({ txn, isNew }) {
               <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
                 {txn.layers && Object.entries(txn.layers).map(([layer, data]) => (
                   <div key={layer} style={{
-                    background: '#0A0E1A', border: '1px solid #232B42', borderRadius: 6,
+                    background: 'var(--bg-primary)', border: '1px solid var(--border-subtle)', borderRadius: 6,
                     padding: '6px 10px', flex: 1, textAlign: 'center',
                   }}>
-                    <div style={{ fontSize: 10, color: '#8B93A8', textTransform: 'capitalize' }}>{layer}</div>
-                    <div style={{ fontSize: 16, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: '#F4F6FB' }}>
+                    <div style={{ fontSize: 10, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{layer}</div>
+                    <div style={{ fontSize: 16, fontWeight: 700, fontFamily: 'var(--font-mono), monospace', color: 'var(--text-primary)' }}>
                       {data.score}
                     </div>
                   </div>
                 ))}
                 <div style={{
-                  background: '#0A0E1A', border: `1px solid ${decisionColors[txn.decision]}40`, borderRadius: 6,
+                  background: 'var(--bg-primary)', border: `1px solid ${decisionColors[txn.decision]}40`, borderRadius: 6,
                   padding: '6px 10px', flex: 1, textAlign: 'center',
                 }}>
-                  <div style={{ fontSize: 10, color: '#8B93A8' }}>Final</div>
-                  <div style={{ fontSize: 16, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: decisionColors[txn.decision] }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-secondary)' }}>Final</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, fontFamily: 'var(--font-mono), monospace', color: decisionColors[txn.decision] }}>
                     {txn.score}
                   </div>
                 </div>
@@ -148,19 +148,19 @@ function LiveFeedRow({ txn, isNew }) {
                 <div key={i} style={{
                   display: 'flex', alignItems: 'flex-start', gap: 8,
                   padding: '6px 0',
-                  borderBottom: i < txn.reasons.length - 1 ? '1px solid #1A2035' : 'none',
+                  borderBottom: i < txn.reasons.length - 1 ? '1px solid var(--border-subtle)' : 'none',
                 }}>
                   <div style={{
                     width: 6, height: 6, borderRadius: '50%', marginTop: 5, flexShrink: 0,
-                    background: r.layer === 'rule' ? '#EF4444' : r.layer === 'statistical' ? '#F59E0B' : '#38BDF8',
+                    background: r.layer === 'rule' ? 'var(--risk-high)' : r.layer === 'statistical' ? 'var(--risk-medium)' : 'var(--accent-burgundy)',
                   }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: '#F4F6FB' }}>{r.factor}</div>
-                    <div style={{ fontSize: 11, color: '#8B93A8', lineHeight: 1.4, marginTop: 1 }}>{r.description}</div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>{r.factor}</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.4, marginTop: 1 }}>{r.description}</div>
                   </div>
                   <div style={{
-                    fontSize: 12, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
-                    color: r.contribution > 70 ? '#EF4444' : r.contribution > 40 ? '#F59E0B' : '#8B93A8',
+                    fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-mono), monospace',
+                    color: r.contribution > 70 ? 'var(--risk-high)' : r.contribution > 40 ? 'var(--risk-medium)' : 'var(--text-secondary)',
                     flexShrink: 0,
                   }}>
                     {r.contribution}
@@ -241,10 +241,10 @@ export default function DashboardPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Page header */}
       <div>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#F4F6FB', marginBottom: 4 }}>
+        <h1 style={{ fontFamily: 'var(--font-display), serif', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
           Live Operations Dashboard
         </h1>
-        <p style={{ fontSize: 13, color: '#8B93A8' }}>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
           Real-time transaction scoring · Ensemble AI · Sub-10ms decisions
         </p>
       </div>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
           value={kpis.totalToday}
           subtitle="Since midnight"
           icon={Activity}
-          glowColor="#38BDF8"
+          glowColor="var(--accent-burgundy)"
         />
         <KpiCard
           title="Fraud Blocked"
@@ -291,15 +291,15 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 16, alignItems: 'start' }} className="grid-cols-1 lg:grid-cols-[1fr_280px]">
         {/* Live feed */}
         <div style={{
-          background: '#0F1524',
-          border: '1px solid #232B42',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-subtle)',
           borderRadius: 12,
           overflow: 'hidden',
         }}>
           {/* Feed header */}
           <div style={{
             padding: '14px 16px',
-            borderBottom: '1px solid #232B42',
+            borderBottom: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
             gap: 10,
@@ -309,10 +309,10 @@ export default function DashboardPage() {
               background: isLive ? '#22C55E' : '#F59E0B', 
               boxShadow: isLive ? '0 0 8px #22C55E' : 'none',
             }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#F4F6FB' }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
               {isLive ? 'Live Transaction Feed' : 'Feed Paused'}
             </span>
-            <span style={{ marginLeft: 'auto', fontSize: 11, color: '#8B93A8', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 12 }}>
               <span>{transactions.length} scored</span>
               <button
                 onClick={toggleLive}
@@ -338,7 +338,7 @@ export default function DashboardPage() {
             display: 'grid',
             gridTemplateColumns: '1fr 100px 90px 80px 28px',
             gap: 12, padding: '8px 12px',
-            borderBottom: '1px solid #1A2035',
+            borderBottom: '1px solid var(--border-subtle)',
           }}>
             {['Transaction', 'Amount', 'Score', 'Decision', ''].map((h, i) => (
               <div key={i} style={{ fontSize: 10, color: '#4B5563', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', textAlign: i === 1 ? 'right' : i === 2 ? 'center' : 'left' }}>
@@ -369,8 +369,8 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Score gauge */}
           <div style={{
-            background: '#0F1524',
-            border: '1px solid #232B42',
+            background: 'var(--bg-secondary)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 12,
             padding: '20px 16px',
             textAlign: 'center',
@@ -383,15 +383,15 @@ export default function DashboardPage() {
               top: '30%', left: '50%', transform: 'translate(-50%, -50%)',
               width: 160, height: 160,
               background: `radial-gradient(circle, ${
-                !latestTxn ? 'rgba(56,189,248,0.08)' :
-                latestTxn.decision === 'BLOCK' ? 'rgba(220,38,38,0.15)' :
-                latestTxn.decision === 'REVIEW' ? 'rgba(245,158,11,0.12)' :
+                !latestTxn ? 'var(--accent-burgundy-glow)' :
+                latestTxn.decision === 'BLOCK' ? 'rgba(255,59,59,0.15)' :
+                latestTxn.decision === 'REVIEW' ? 'rgba(232,163,61,0.12)' :
                 'rgba(34,197,94,0.1)'
               } 0%, transparent 70%)`,
               pointerEvents: 'none',
             }} />
 
-            <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>
               Latest Transaction
             </div>
 
@@ -401,10 +401,10 @@ export default function DashboardPage() {
                 <div style={{ marginTop: 12 }}>
                   <RiskBadge decision={latestTxn.decision} size="lg" />
                 </div>
-                <div style={{ marginTop: 10, fontSize: 12, color: '#8B93A8' }}>
+                <div style={{ marginTop: 10, fontSize: 12, color: 'var(--text-secondary)' }}>
                   {latestTxn.merchant}
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#F4F6FB', fontFamily: 'JetBrains Mono, monospace' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-mono), monospace' }}>
                   ₹{latestTxn.amount?.toLocaleString('en-IN')}
                 </div>
                 <div style={{ fontSize: 11, color: '#4B5563', marginTop: 4 }}>
@@ -420,32 +420,32 @@ export default function DashboardPage() {
 
           {/* Trend sparkline */}
           <div style={{
-            background: '#0F1524',
-            border: '1px solid #232B42',
+            background: 'var(--bg-secondary)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 12,
             padding: '14px 16px',
           }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
               Risk Score Trend
             </div>
             <ResponsiveContainer width="100%" height={80}>
               <AreaChart data={chartData} margin={{ top: 4, right: 0, bottom: 0, left: -30 }}>
                 <defs>
                   <linearGradient id="scoreGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#38BDF8" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6D001A" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#6D001A" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="i" hide />
                 <YAxis domain={[0, 100]} hide />
                 <Tooltip
-                  contentStyle={{ background: '#161D30', border: '1px solid #232B42', borderRadius: 6, fontSize: 11 }}
+                  contentStyle={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)', borderRadius: 6, fontSize: 11 }}
                   formatter={(v) => [`${v}`, 'Risk Score']}
                   labelFormatter={() => ''}
                 />
                 <Area
                   type="monotone" dataKey="score"
-                  stroke="#38BDF8" fill="url(#scoreGrad)"
+                  stroke="#6D001A" fill="url(#scoreGrad)"
                   strokeWidth={1.5} dot={false}
                 />
               </AreaChart>

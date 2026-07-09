@@ -1,4 +1,24 @@
 import './globals.css';
+import { Inter, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800', '900'],
+});
 
 export const metadata = {
   title: 'FraudGuard AI — Real-Time Fraud Detection',
@@ -19,7 +39,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="bg-bg-primary text-text-primary antialiased">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} font-sans bg-bg-primary text-text-primary antialiased`}>
         {children}
       </body>
     </html>

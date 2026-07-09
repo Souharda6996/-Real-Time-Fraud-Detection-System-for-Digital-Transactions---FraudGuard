@@ -28,7 +28,7 @@ const FEATURES = [
     icon: Brain,
     title: 'Ensemble AI Scoring',
     description: 'Three-layer weighted ensemble: hard business rules + statistical behavioral deviation + trained logistic regression. Every signal has a named contribution.',
-    accent: '#38BDF8',
+    accent: 'var(--accent-burgundy)',
     tag: 'Mirrors Hawk AI',
   },
   {
@@ -64,7 +64,7 @@ function FloatingTxnCard({ txn, style, delay }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
       style={{
-        background: '#0F1524',
+        background: 'var(--bg-secondary)',
         border: `1px solid ${txn.decision === 'BLOCK' ? 'rgba(239,68,68,0.3)' : txn.decision === 'REVIEW' ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.2)'}`,
         borderRadius: 10,
         padding: '10px 14px',
@@ -75,7 +75,7 @@ function FloatingTxnCard({ txn, style, delay }) {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
         <div>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', color: '#38BDF8', fontSize: 10, marginBottom: 2 }}>{txn.id}</div>
+          <div style={{ fontFamily: 'var(--font-mono), monospace', color: 'var(--accent-burgundy)', fontSize: 10, marginBottom: 2 }}>{txn.id}</div>
           <div style={{ color: '#F4F6FB', fontWeight: 500 }}>{txn.merchant}</div>
           <div style={{ color: '#8B93A8', marginTop: 1 }}>₹{txn.amount.toLocaleString('en-IN')} · {txn.location}</div>
         </div>
@@ -90,7 +90,7 @@ function FloatingTxnCard({ txn, style, delay }) {
         </div>
       </div>
       <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ height: 3, flex: 1, background: '#232B42', borderRadius: 2, overflow: 'hidden' }}>
+        <div style={{ height: 3, flex: 1, background: 'var(--border-subtle)', borderRadius: 2, overflow: 'hidden' }}>
           <div style={{
             width: `${txn.score}%`, height: '100%', borderRadius: 2,
             background: txn.decision === 'BLOCK' ? '#EF4444' : txn.decision === 'REVIEW' ? '#F59E0B' : '#22C55E',
@@ -112,33 +112,33 @@ const DEMO_TXNS = [
 
 export default function LandingPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0E1A', color: '#F4F6FB', overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', overflowX: 'hidden' }}>
       {/* Nav */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: 'rgba(10,14,26,0.85)', backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #232B42',
+        borderBottom: '1px solid var(--border-subtle)',
         padding: '14px 40px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
-            background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+            background: 'var(--accent-burgundy)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(56,189,248,0.3)',
+            boxShadow: '0 0 16px var(--accent-burgundy-glow)',
           }}>
             <Shield size={18} color="#fff" />
           </div>
           <div>
             <span style={{ fontSize: 16, fontWeight: 700, color: '#F4F6FB' }}>FraudGuard</span>
-            <span style={{ fontSize: 12, color: '#38BDF8', marginLeft: 6, fontWeight: 500 }}>AI</span>
+            <span style={{ fontSize: 12, color: 'var(--accent-burgundy)', marginLeft: 6, fontWeight: 500 }}>AI</span>
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <Link href="/dashboard/simulate" style={{ textDecoration: 'none' }}>
             <button style={{
-              background: 'transparent', border: '1px solid #232B42',
+              background: 'transparent', border: '1px solid var(--border-subtle)',
               borderRadius: 8, padding: '7px 16px',
               color: '#8B93A8', fontSize: 13, cursor: 'pointer',
             }}>
@@ -147,7 +147,7 @@ export default function LandingPage() {
           </Link>
           <Link href="/dashboard" style={{ textDecoration: 'none' }}>
             <button style={{
-              background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+              background: 'var(--accent-burgundy)',
               border: 'none', borderRadius: 8, padding: '7px 18px',
               color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer',
             }}>
@@ -169,7 +169,7 @@ export default function LandingPage() {
         <div style={{
           position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%,-50%)',
           width: 600, height: 600,
-          background: 'radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, var(--accent-burgundy-glow) 0%, transparent 65%)',
           pointerEvents: 'none',
         }} />
 
@@ -179,10 +179,10 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'rgba(56,189,248,0.08)',
-            border: '1px solid rgba(56,189,248,0.25)',
+            background: 'rgba(109,0,26,0.08)',
+            border: '1px solid rgba(109,0,26,0.25)',
             borderRadius: 20, padding: '5px 14px', marginBottom: 28,
-            fontSize: 12, color: '#38BDF8', fontWeight: 500,
+            fontSize: 12, color: 'var(--accent-burgundy)', fontWeight: 500,
           }}
         >
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 6px #22C55E' }} className="live-dot" />
@@ -195,6 +195,7 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           style={{
+            fontFamily: 'var(--font-display), serif',
             fontSize: 'clamp(36px, 6vw, 68px)',
             fontWeight: 900,
             lineHeight: 1.05,
@@ -205,7 +206,7 @@ export default function LandingPage() {
           Real-time fraud decisions
           <br />
           <span style={{
-            background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+            background: 'linear-gradient(135deg, #8C0022, #C94F63)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -226,7 +227,7 @@ export default function LandingPage() {
         >
           ML model trained offline in Python, inference runs as pure JavaScript serverless functions
           on Vercel&apos;s edge — every transaction scored in{' '}
-          <span style={{ color: '#38BDF8', fontWeight: 600 }}>single-digit milliseconds</span>{' '}
+          <span style={{ color: 'var(--accent-burgundy)', fontWeight: 600 }}>single-digit milliseconds</span>{' '}
           with full explainability. No cold start. No Python runtime.
         </motion.p>
 
@@ -242,11 +243,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               style={{
-                background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+                background: 'var(--accent-burgundy)',
                 border: 'none', borderRadius: 10, padding: '13px 28px',
                 color: '#fff', fontSize: 15, fontWeight: 700,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                boxShadow: '0 0 24px rgba(56,189,248,0.25)',
+                boxShadow: '0 0 24px var(--accent-burgundy-glow)',
               }}
             >
               Launch Live Demo <ArrowRight size={16} />
@@ -258,12 +259,12 @@ export default function LandingPage() {
               whileTap={{ scale: 0.98 }}
               style={{
                 background: 'transparent',
-                border: '1px solid #232B42', borderRadius: 10, padding: '13px 28px',
+                border: '1px solid var(--border-subtle)', borderRadius: 10, padding: '13px 28px',
                 color: '#F4F6FB', fontSize: 15, fontWeight: 600,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
               }}
             >
-              <Zap size={16} color="#38BDF8" /> Try the Scoring Engine
+              <Zap size={16} color="var(--accent-burgundy)" /> Try the Scoring Engine
             </motion.button>
           </Link>
         </motion.div>
@@ -284,10 +285,10 @@ export default function LandingPage() {
 
       {/* Stats strip */}
       <section style={{
-        borderTop: '1px solid #232B42',
-        borderBottom: '1px solid #232B42',
+        borderTop: '1px solid var(--border-subtle)',
+        borderBottom: '1px solid var(--border-subtle)',
         padding: '40px 40px',
-        background: '#0F1524',
+        background: 'var(--bg-secondary)',
       }}>
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, maxWidth: 900, margin: '0 auto',
@@ -301,7 +302,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div style={{ fontSize: 32, fontWeight: 800, color: '#F4F6FB', fontFamily: 'JetBrains Mono, monospace' }}>
+              <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono), monospace' }}>
                 <AnimatedCounter end={end} prefix={prefix} suffix={suffix} />
               </div>
               <div style={{ fontSize: 12, color: '#8B93A8', marginTop: 4 }}>{label}</div>
@@ -313,7 +314,7 @@ export default function LandingPage() {
       {/* Feature grid */}
       <section style={{ padding: '80px 40px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 50 }}>
-          <h2 style={{ fontSize: 36, fontWeight: 800, marginBottom: 12 }}>
+          <h2 style={{ fontFamily: 'var(--font-display), serif', fontSize: 36, fontWeight: 800, marginBottom: 12 }}>
             Built like an enterprise product.
           </h2>
           <p style={{ fontSize: 15, color: '#8B93A8', maxWidth: 560, margin: '0 auto' }}>
@@ -329,7 +330,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               style={{
-                background: '#0F1524', border: '1px solid #232B42', borderRadius: 14, padding: '24px',
+                background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 14, padding: '24px',
                 position: 'relative', overflow: 'hidden',
               }}
             >
@@ -361,20 +362,20 @@ export default function LandingPage() {
       {/* Architecture diagram */}
       <section style={{ padding: '0 40px 80px', maxWidth: 900, margin: '0 auto' }}>
         <div style={{
-          background: '#0F1524', border: '1px solid #232B42', borderRadius: 14, padding: '32px',
+          background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 14, padding: '32px',
         }}>
-          <h2 style={{ fontSize: 20, fontWeight: 700, textAlign: 'center', marginBottom: 30 }}>
+          <h2 style={{ fontFamily: 'var(--font-display), serif', fontSize: 20, fontWeight: 700, textAlign: 'center', marginBottom: 30 }}>
             System Architecture
           </h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[
-              { label: 'Incoming Transaction', color: '#38BDF8', icon: '💳' },
+              { label: 'Incoming Transaction', color: 'var(--accent-burgundy)', icon: '💳' },
               { label: '→', color: '#4B5563', isArrow: true },
-              { label: 'Rule Engine', color: '#EF4444', icon: '⚡' },
+              { label: 'Rule Engine', color: '#FF3B3B', icon: '⚡' },
               { label: '+', color: '#4B5563', isArrow: true },
-              { label: 'Statistical Layer', color: '#F59E0B', icon: '📊' },
+              { label: 'Statistical Layer', color: '#E8A33D', icon: '📊' },
               { label: '+', color: '#4B5563', isArrow: true },
-              { label: 'JS Model Inference', color: '#38BDF8', icon: '🤖' },
+              { label: 'JS Model Inference', color: 'var(--accent-burgundy)', icon: '🤖' },
               { label: '→', color: '#4B5563', isArrow: true },
               { label: 'Weighted Score', color: '#8B5CF6', icon: '🎯' },
               { label: '→', color: '#4B5563', isArrow: true },
@@ -384,7 +385,7 @@ export default function LandingPage() {
                 <span key={i} style={{ fontSize: 20, color: item.color }}>{item.label}</span>
               ) : (
                 <div key={i} style={{
-                  background: '#161D30',
+                  background: 'var(--bg-tertiary)',
                   border: `1px solid ${item.color}30`,
                   borderRadius: 10, padding: '10px 16px',
                   textAlign: 'center',
@@ -404,8 +405,8 @@ export default function LandingPage() {
 
       {/* Inspired by strip */}
       <section style={{
-        borderTop: '1px solid #232B42', padding: '28px 40px',
-        background: '#0F1524',
+        borderTop: '1px solid var(--border-subtle)', padding: '28px 40px',
+        background: 'var(--bg-secondary)',
         textAlign: 'center',
       }}>
         <div style={{ fontSize: 11, color: '#4B5563', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -428,7 +429,7 @@ export default function LandingPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 style={{ fontSize: 36, fontWeight: 800, marginBottom: 14 }}>
+          <h2 style={{ fontFamily: 'var(--font-display), serif', fontSize: 36, fontWeight: 800, marginBottom: 14 }}>
             Ready to explore the demo?
           </h2>
           <p style={{ fontSize: 15, color: '#8B93A8', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
@@ -439,11 +440,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               style={{
-                background: 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+                background: 'var(--accent-burgundy)',
                 border: 'none', borderRadius: 12, padding: '15px 36px',
                 color: '#fff', fontSize: 16, fontWeight: 700,
                 cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10,
-                boxShadow: '0 0 32px rgba(56,189,248,0.3)',
+                boxShadow: '0 0 32px var(--accent-burgundy-glow)',
               }}
             >
               Launch FraudGuard Dashboard <ArrowRight size={18} />

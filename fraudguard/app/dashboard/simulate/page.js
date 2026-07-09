@@ -63,7 +63,7 @@ const CATEGORIES = [
 ];
 
 function FactorBar({ factor, contribution, description, layer }) {
-  const layerColors = { rule: '#EF4444', statistical: '#F59E0B', model: '#38BDF8' };
+  const layerColors = { rule: 'var(--risk-high)', statistical: 'var(--risk-medium)', model: 'var(--accent-burgundy)' };
   const color = layerColors[layer] || '#8B93A8';
 
   return (
@@ -79,12 +79,12 @@ function FactorBar({ factor, contribution, description, layer }) {
             {layer}
           </span>
         </div>
-        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color }}>
+        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-mono), monospace', color }}>
           {contribution}
         </span>
       </div>
       {/* Bar */}
-      <div style={{ height: 4, background: '#232B42', borderRadius: 2, overflow: 'hidden', marginBottom: 5 }}>
+      <div style={{ height: 4, background: 'var(--border-subtle)', borderRadius: 2, overflow: 'hidden', marginBottom: 5 }}>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${contribution}%` }}
@@ -178,8 +178,8 @@ export default function SimulatePage() {
   };
 
   const inputStyle = {
-    background: '#161D30',
-    border: '1px solid #232B42',
+    background: 'var(--bg-tertiary)',
+    border: '1px solid var(--border-subtle)',
     color: '#F4F6FB',
     borderRadius: 8,
     padding: '9px 12px',
@@ -212,16 +212,16 @@ export default function SimulatePage() {
             whileTap={{ scale: 0.99 }}
             onClick={() => applyScenario(s)}
             style={{
-              background: '#0F1524',
-              border: '1px solid #232B42',
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: 10,
               padding: '12px 16px',
               textAlign: 'left',
               cursor: 'pointer',
               transition: 'border-color 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = '#38BDF8'}
-            onMouseLeave={e => e.currentTarget.style.borderColor = '#232B42'}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-burgundy)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border-subtle)'}
           >
             <div style={{ fontSize: 13, fontWeight: 600, color: '#F4F6FB', marginBottom: 4 }}>{s.label}</div>
             <div style={{ fontSize: 11, color: '#8B93A8' }}>{s.description}</div>
@@ -232,8 +232,8 @@ export default function SimulatePage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'start' }} className="grid-cols-1 lg:grid-cols-2">
         {/* Form */}
         <div style={{
-          background: '#0F1524',
-          border: '1px solid #232B42',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-subtle)',
           borderRadius: 12,
           padding: '20px',
         }}>
@@ -258,7 +258,7 @@ export default function SimulatePage() {
               {/* Persona info */}
               <div style={{
                 marginTop: 6, padding: '8px 10px',
-                background: '#161D30', border: '1px solid #1A2035', borderRadius: 6,
+                background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)', borderRadius: 6,
                 fontSize: 11, color: '#8B93A8', display: 'flex', gap: 12, flexWrap: 'wrap',
               }}>
                 <span>💳 Balance: ₹{persona.accountBalance?.toLocaleString()}</span>
@@ -324,7 +324,7 @@ export default function SimulatePage() {
               <input
                 type="range" min="0" max="23" value={form.hour}
                 onChange={e => setForm(f => ({ ...f, hour: parseInt(e.target.value) }))}
-                style={{ width: '100%', accentColor: '#38BDF8', cursor: 'pointer' }}
+                style={{ width: '100%', accentColor: 'var(--accent-burgundy)', cursor: 'pointer' }}
               />
             </div>
 
@@ -339,7 +339,7 @@ export default function SimulatePage() {
                     onClick={() => setForm(f => ({ ...f, [key]: !f[key] }))}
                     style={{
                       width: 38, height: 20, borderRadius: 10, position: 'relative',
-                      background: form[key] ? '#38BDF8' : '#232B42',
+                      background: form[key] ? 'var(--accent-burgundy)' : 'var(--border-subtle)',
                       cursor: 'pointer', transition: 'background 0.2s', flexShrink: 0,
                     }}
                   >
@@ -361,7 +361,7 @@ export default function SimulatePage() {
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
               style={{
-                background: loading ? '#232B42' : 'linear-gradient(135deg, #38BDF8, #3B82F6)',
+                background: loading ? 'var(--border-subtle)' : 'var(--accent-burgundy)',
                 border: 'none', borderRadius: 8, padding: '12px',
                 color: '#fff', fontSize: 14, fontWeight: 700,
                 cursor: loading ? 'not-allowed' : 'pointer',
@@ -397,7 +397,7 @@ export default function SimulatePage() {
             >
               {/* Decision card */}
               <div style={{
-                background: '#0F1524', border: '1px solid #232B42', borderRadius: 12,
+                background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 12,
                 padding: '20px', textAlign: 'center', position: 'relative', overflow: 'hidden',
               }}>
                 <div style={{
@@ -422,7 +422,7 @@ export default function SimulatePage() {
               </div>
 
               {/* Layer breakdown */}
-              <div style={{ background: '#0F1524', border: '1px solid #232B42', borderRadius: 12, padding: '16px' }}>
+              <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 12, padding: '16px' }}>
                 <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>
                   Ensemble Score Breakdown
                 </div>
@@ -430,14 +430,14 @@ export default function SimulatePage() {
                   {result.layers && [
                     { label: 'Rule Engine', key: 'rule', color: '#EF4444' },
                     { label: 'Statistical', key: 'statistical', color: '#F59E0B' },
-                    { label: 'ML Model', key: 'model', color: '#38BDF8' },
+                    { label: 'ML Model', key: 'model', color: 'var(--accent-burgundy)' },
                   ].map(({ label, key, color }) => (
                     <div key={key} style={{
-                      background: '#161D30', border: `1px solid ${color}25`, borderRadius: 8,
+                      background: 'var(--bg-tertiary)', border: `1px solid ${color}25`, borderRadius: 8,
                       padding: '10px', textAlign: 'center',
                     }}>
-                      <div style={{ fontSize: 10, color: '#8B93A8', marginBottom: 4 }}>{label}</div>
-                      <div style={{ fontSize: 22, fontWeight: 800, color, fontFamily: 'JetBrains Mono, monospace' }}>
+                      <div style={{ fontSize: 10, color: 'var(--text-secondary)', marginBottom: 4 }}>{label}</div>
+                      <div style={{ fontSize: 22, fontWeight: 800, color, fontFamily: 'var(--font-mono), monospace' }}>
                         {result.layers[key]?.score ?? '—'}
                       </div>
                       <div style={{ fontSize: 9, color: '#4B5563', marginTop: 2 }}>
@@ -464,12 +464,12 @@ export default function SimulatePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               style={{
-                background: '#0F1524', border: '1px dashed #232B42', borderRadius: 12,
+                background: 'var(--bg-secondary)', border: '1px dashed var(--border-subtle)', borderRadius: 12,
                 padding: '60px 20px', textAlign: 'center',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
               }}
             >
-              <Zap size={36} color="#232B42" />
+              <Zap size={36} color="var(--border-subtle)" />
               <div style={{ fontSize: 14, color: '#4B5563', fontWeight: 500 }}>
                 Pick a scenario or fill the form
               </div>

@@ -67,9 +67,9 @@ function QueueItem({ txn }) {
       exit={{ opacity: 0, height: 0, marginBottom: 0 }}
       transition={{ duration: 0.3 }}
       style={{
-        background: '#0F1524',
-        border: '1px solid #232B42',
-        borderLeft: '3px solid #F59E0B',
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-subtle)',
+        borderLeft: '3px solid var(--risk-medium)',
         borderRadius: 10,
         padding: '16px',
         marginBottom: 10,
@@ -79,7 +79,7 @@ function QueueItem({ txn }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: '#38BDF8' }}>
+            <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 12, color: 'var(--accent-burgundy)' }}>
               {txn.id}
             </span>
             <RiskBadge decision={txn.decision} />
@@ -95,9 +95,9 @@ function QueueItem({ txn }) {
           </div>
         </div>
         <div style={{
-          fontFamily: 'JetBrains Mono, monospace',
+          fontFamily: 'var(--font-mono), monospace',
           fontSize: 28, fontWeight: 800,
-          color: '#F59E0B',
+          color: 'var(--risk-medium)',
           lineHeight: 1,
         }}>
           {txn.score}
@@ -107,7 +107,7 @@ function QueueItem({ txn }) {
       {/* Top reason */}
       {txn.reasons?.[0] && (
         <div style={{
-          background: '#161D30', border: '1px solid #1A2035',
+          background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)',
           borderRadius: 6, padding: '8px 10px', marginBottom: 12,
           fontSize: 11, color: '#8B93A8',
         }}>
@@ -163,11 +163,11 @@ export default function QueuePage() {
           </p>
         </div>
         <div style={{
-          background: '#0F1524', border: '1px solid #232B42', borderRadius: 10,
+          background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 10,
           padding: '10px 16px', textAlign: 'center',
         }}>
-          <div style={{ fontSize: 10, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Queue</div>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#F59E0B', fontFamily: 'JetBrains Mono, monospace' }}>
+          <div style={{ fontSize: 10, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Queue</div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--risk-medium)', fontFamily: 'var(--font-mono), monospace' }}>
             {reviewQueue.length}
           </div>
         </div>
@@ -176,12 +176,12 @@ export default function QueuePage() {
       {/* Stats bar */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {[
-          { label: 'Total Reviewed', value: analystStats.total, icon: Shield, color: '#38BDF8' },
-          { label: 'Fraud Confirmed', value: analystStats.resolved.filter(r => r.resolution === 'DECLINE').length, icon: XCircle, color: '#EF4444' },
+          { label: 'Total Reviewed', value: analystStats.total, icon: Shield, color: 'var(--accent-burgundy)' },
+          { label: 'Fraud Confirmed', value: analystStats.resolved.filter(r => r.resolution === 'DECLINE').length, icon: XCircle, color: 'var(--risk-high)' },
           { label: 'Analyst Accuracy', value: accuracy !== null ? `${accuracy}%` : '—', icon: TrendingUp, color: '#22C55E' },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} style={{
-            background: '#0F1524', border: '1px solid #232B42',
+            background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)',
             borderRadius: 10, padding: '14px 16px',
             display: 'flex', alignItems: 'center', gap: 12,
           }}>
@@ -189,8 +189,8 @@ export default function QueuePage() {
               <Icon size={16} color={color} />
             </div>
             <div>
-              <div style={{ fontSize: 10, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#F4F6FB', fontFamily: 'JetBrains Mono, monospace' }}>{value}</div>
+              <div style={{ fontSize: 10, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono), monospace' }}>{value}</div>
             </div>
           </div>
         ))}
@@ -204,11 +204,11 @@ export default function QueuePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               style={{
-                background: '#0F1524', border: '1px dashed #232B42', borderRadius: 12,
+                background: 'var(--bg-secondary)', border: '1px dashed var(--border-subtle)', borderRadius: 12,
                 padding: '60px 20px', textAlign: 'center',
               }}
             >
-              <Inbox size={40} color="#232B42" style={{ margin: '0 auto 12px' }} />
+              <Inbox size={40} color="var(--border-subtle)" style={{ margin: '0 auto 12px' }} />
               <div style={{ fontSize: 15, color: '#4B5563', fontWeight: 500 }}>Queue is clear</div>
               <div style={{ fontSize: 12, color: '#2D3748', marginTop: 4 }}>
                 No pending items — all medium-risk transactions have been reviewed.
@@ -222,7 +222,7 @@ export default function QueuePage() {
 
       {/* Resolution history */}
       {analystStats.resolved.length > 0 && (
-        <div style={{ background: '#0F1524', border: '1px solid #232B42', borderRadius: 12, padding: '16px' }}>
+        <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 12, padding: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Recent Resolutions
@@ -233,15 +233,15 @@ export default function QueuePage() {
             <div key={i} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               padding: '7px 0',
-              borderBottom: i < 7 ? '1px solid #1A2035' : 'none',
+              borderBottom: i < 7 ? '1px solid var(--border-subtle)' : 'none',
               fontSize: 12,
             }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#38BDF8', fontSize: 11 }}>
+              <span style={{ fontFamily: 'var(--font-mono), monospace', color: 'var(--accent-burgundy)', fontSize: 11 }}>
                 {r.txnId?.slice(-10)}
               </span>
-              <span style={{ color: '#8B93A8' }}>₹{r.amount?.toLocaleString('en-IN')}</span>
+              <span style={{ color: 'var(--text-secondary)' }}>₹{r.amount?.toLocaleString('en-IN')}</span>
               <span style={{
-                color: r.resolution === 'APPROVE' ? '#22C55E' : r.resolution === 'DECLINE' ? '#EF4444' : '#F59E0B',
+                color: r.resolution === 'APPROVE' ? 'var(--risk-low)' : r.resolution === 'DECLINE' ? 'var(--risk-high)' : 'var(--risk-medium)',
                 fontWeight: 600,
               }}>
                 {r.resolution}

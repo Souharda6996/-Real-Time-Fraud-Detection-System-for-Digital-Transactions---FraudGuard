@@ -16,7 +16,7 @@ const COLORS = {
   success: { border: '#22C55E', bg: 'rgba(34,197,94,0.1)', icon: '#22C55E' },
   warning: { border: '#F59E0B', bg: 'rgba(245,158,11,0.1)', icon: '#F59E0B' },
   error:   { border: '#EF4444', bg: 'rgba(239,68,68,0.1)', icon: '#EF4444' },
-  info:    { border: '#38BDF8', bg: 'rgba(56,189,248,0.1)', icon: '#38BDF8' },
+  info:    { border: '#6D001A', bg: 'rgba(109,0,26,0.1)', icon: '#6D001A' },
 };
 
 function Toast({ toast }) {
@@ -30,8 +30,8 @@ function Toast({ toast }) {
       exit={{ opacity: 0, x: 60, scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       style={{
-        background: '#0F1524',
-        border: `1px solid ${c.border}`,
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-subtle)',
         borderLeft: `3px solid ${c.border}`,
         borderRadius: 10,
         padding: '12px 16px',

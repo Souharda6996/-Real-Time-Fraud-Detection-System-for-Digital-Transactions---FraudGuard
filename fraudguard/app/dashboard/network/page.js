@@ -86,10 +86,10 @@ export default function NetworkPage() {
               key={String(btn.id)}
               onClick={() => setHighlightCluster(btn.id)}
               style={{
-                background: highlightCluster === btn.id ? 'rgba(56,189,248,0.1)' : 'transparent',
-                border: `1px solid ${highlightCluster === btn.id ? '#38BDF8' : '#232B42'}`,
+                background: highlightCluster === btn.id ? 'rgba(109,0,26,0.15)' : 'transparent',
+                border: `1px solid ${highlightCluster === btn.id ? 'var(--accent-burgundy)' : 'var(--border-subtle)'}`,
                 borderRadius: 8, padding: '7px 14px',
-                color: highlightCluster === btn.id ? '#38BDF8' : '#8B93A8',
+                color: highlightCluster === btn.id ? 'var(--accent-burgundy)' : 'var(--text-secondary)',
                 fontSize: 12, fontWeight: 500, cursor: 'pointer',
               }}
             >
@@ -102,7 +102,7 @@ export default function NetworkPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 240px', gap: 16, alignItems: 'start' }}>
         {/* Graph canvas */}
         <div style={{
-          background: '#0F1524', border: '1px solid #232B42', borderRadius: 12, overflow: 'hidden',
+          background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 12, overflow: 'hidden',
           position: 'relative',
         }}>
           {/* Fraud ring label */}
@@ -118,7 +118,7 @@ export default function NetworkPage() {
             {/* Background grid */}
             <defs>
               <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-                <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#161D30" strokeWidth="0.5" />
+                <path d="M 30 0 L 0 0 0 30" fill="none" stroke="var(--border-subtle)" strokeWidth="0.5" />
               </pattern>
               {/* Glow filters */}
               <filter id="glowRed"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -149,7 +149,7 @@ export default function NetworkPage() {
                 <g key={i}>
                   <line
                     x1={from.x} y1={from.y} x2={to.x} y2={to.y}
-                    stroke={isFraudEdge ? '#EF4444' : '#232B42'}
+                    stroke={isFraudEdge ? 'var(--risk-high)' : 'var(--border-subtle)'}
                     strokeWidth={isFraudEdge ? 1.5 : 1}
                     strokeOpacity={opacity}
                     strokeDasharray={isFraudEdge ? 'none' : '3 4'}
@@ -215,8 +215,8 @@ export default function NetworkPage() {
         {/* Detail panel */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* Legend */}
-          <div style={{ background: '#0F1524', border: '1px solid #232B42', borderRadius: 10, padding: '14px' }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Legend</div>
+          <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 10, padding: '14px' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Legend</div>
             {[
               { shape: '●', label: 'User Account', color: '#8B93A8' },
               { shape: '■', label: 'Device', color: '#8B93A8' },
@@ -226,12 +226,12 @@ export default function NetworkPage() {
                 <span style={{ color }}>{shape}</span> {label}
               </div>
             ))}
-            <div style={{ borderTop: '1px solid #1A2035', marginTop: 8, paddingTop: 8 }}>
+            <div style={{ borderTop: '1px solid var(--border-subtle)', marginTop: 8, paddingTop: 8 }}>
               {[
-                { color: '#22C55E', label: 'Low risk' },
-                { color: '#F59E0B', label: 'Medium risk' },
-                { color: '#EF4444', label: 'High risk' },
-                { color: '#DC2626', label: 'Critical / Blacklisted' },
+                { color: 'var(--risk-low)', label: 'Low risk' },
+                { color: 'var(--risk-medium)', label: 'Medium risk' },
+                { color: 'var(--risk-high)', label: 'High risk' },
+                { color: 'var(--risk-high)', label: 'Critical / Blacklisted' },
               ].map(({ color, label }) => (
                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, fontSize: 11, color: '#8B93A8' }}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: color }} /> {label}
@@ -245,7 +245,7 @@ export default function NetworkPage() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              style={{ background: '#0F1524', border: '1px solid #232B42', borderRadius: 10, padding: '14px' }}
+              style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 10, padding: '14px' }}
             >
               <div style={{ fontSize: 11, fontWeight: 600, color: '#8B93A8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
                 Node Detail
@@ -269,8 +269,8 @@ export default function NetworkPage() {
             </motion.div>
           ) : (
             <div style={{
-              background: '#0F1524', border: '1px dashed #232B42', borderRadius: 10, padding: '20px',
-              textAlign: 'center', fontSize: 12, color: '#4B5563',
+              background: 'var(--bg-secondary)', border: '1px dashed var(--border-subtle)', borderRadius: 10, padding: '20px',
+              textAlign: 'center', fontSize: 12, color: 'var(--text-secondary)',
             }}>
               Click a node to see details
             </div>
