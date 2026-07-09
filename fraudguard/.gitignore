@@ -1,0 +1,23 @@
+# Next.js build artifacts
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Env files
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

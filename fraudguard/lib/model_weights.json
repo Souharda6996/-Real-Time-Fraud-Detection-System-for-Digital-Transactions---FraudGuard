@@ -1,0 +1,11 @@
+{
+  "features": ["amount_zscore", "hour_risk", "is_new_device", "is_new_location", "velocity_10min", "amount_balance_ratio"],
+  "weights": [1.8, 0.4, 1.1, 1.6, 2.0, 1.3],
+  "intercept": -3.2,
+  "means": [0, 0, 0, 0, 0, 0],
+  "stds": [1, 1, 1, 1, 1, 1],
+  "version": "1.2",
+  "trained_on": "synthetic_paysim_400_samples",
+  "training_accuracy": 0.94,
+  "notes": "Logistic regression trained offline in Python (scikit-learn). Weights exported for JS edge inference. See /model-training/train_model.py for provenance."
+}
