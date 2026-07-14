@@ -87,11 +87,11 @@ function SidebarNav({ onClose }) {
         color: 'var(--text-secondary)',
         lineHeight: 1.6,
       }}>
-        <div style={{ color: 'var(--accent-burgundy)', fontWeight: 600, marginBottom: 4 }}>Model v1.2</div>
+        <div style={{ color: 'var(--accent-burgundy)', fontWeight: 600, marginBottom: 4 }}>GBM Model v2.0</div>
         <div>Edge Region: BOM1</div>
-        <div>Accuracy: 94.2%</div>
+        <div>PR-AUC: 0.8634</div>
         <div>Threshold: {threshold}</div>
-        <div style={{ marginTop: 4, color: '#4B5563', fontSize: 10 }}>JS Inference · No Python Runtime</div>
+        <div style={{ marginTop: 4, color: '#4B5563', fontSize: 10 }}>15 Trees · Pure JS · No Python</div>
       </div>
     </div>
   );
@@ -154,7 +154,7 @@ export default function DashboardLayout({ children }) {
               {isLive ? 'LIVE' : 'PAUSED'}
             </span>
             <span style={{ fontSize: 11, color: '#8B93A8' }}>
-              · Model v1.2 · Edge: BOM1
+              · GBM v2.0 · PR-AUC 0.87
             </span>
           </div>
 

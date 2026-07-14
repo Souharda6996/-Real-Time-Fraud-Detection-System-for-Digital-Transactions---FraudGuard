@@ -22,20 +22,40 @@ const playfairDisplay = Playfair_Display({
 
 export const metadata = {
   title: 'FraudGuard AI — Real-Time Fraud Detection',
-  description: 'Enterprise-grade real-time fraud detection with sub-10ms edge inference. Ensemble AI scoring, explainable decisions, and human-in-the-loop review workflow.',
-  keywords: 'fraud detection, real-time, AI, machine learning, fintech, risk scoring',
+  description: 'Enterprise-grade real-time fraud detection with sub-10ms edge inference. GBM ensemble scoring (PR-AUC 0.87), explainable decisions, and human-in-the-loop review workflow.',
+  keywords: 'fraud detection, real-time, AI, machine learning, fintech, risk scoring, GBM',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'FraudGuard',
+  },
   openGraph: {
     title: 'FraudGuard AI — Real-Time Fraud Detection',
-    description: 'Enterprise-grade real-time fraud detection with sub-10ms edge inference.',
+    description: 'Production-grade fraud detection: GBM trees, Upstash Redis velocity, HMAC webhooks, RBAC.',
     type: 'website',
   },
 };
+
+// Next.js 14 App Router: viewport must be a separate export
+export const generateViewport = () => ({
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#6D001A',
+});
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#6D001A" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="FraudGuard" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

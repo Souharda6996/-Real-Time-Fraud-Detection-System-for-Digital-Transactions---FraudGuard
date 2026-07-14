@@ -1,0 +1,244 @@
+{
+  "version": "2.0",
+  "model_type": "gradient_boosted_trees",
+  "trained_on": "Kaggle Credit Card Fraud Detection (284,807 transactions, 492 frauds) + PaySim TRANSFER/CASH_OUT subset (1.58M transactions). Run model-training/train_gbm.py to reproduce.",
+  "training_script": "model-training/train_gbm.py",
+  "evaluation_report": "model-training/evaluation_report.md",
+  "features": [
+    "amount_zscore",
+    "is_new_device",
+    "is_new_location",
+    "velocity_10min",
+    "amount_balance_ratio",
+    "is_new_payee",
+    "account_age_norm",
+    "hour_risk",
+    "avg_amount_ratio"
+  ],
+  "feature_descriptions": {
+    "amount_zscore": "Z-score of transaction amount vs sender 30d mean (amount - avg) / max(avg*0.5, 100)",
+    "is_new_device": "1 if device fingerprint not seen before for this sender, else 0",
+    "is_new_location": "1 if location cluster is new for this sender, else 0",
+    "velocity_10min": "Transactions by this sender in last 10 minutes, normalized 0-1 (capped at 10)",
+    "amount_balance_ratio": "amount / balanceAfter, capped at 2.0. High ratio = draining account",
+    "is_new_payee": "1 if sender has never sent to this receiver before, else 0",
+    "account_age_norm": "accountAgeDays / 365, capped at 3.0. Low = brand new account",
+    "hour_risk": "0=day, 0.5=late evening/early morning, 1.0=1am-4am",
+    "avg_amount_ratio": "amount / sender.avgTxnAmount30d, capped at 10. Measures unusual spend relative to baseline"
+  },
+  "base_score": -3.0,
+  "n_trees": 15,
+  "max_depth": 2,
+  "ensemble_weights": {
+    "rule_layer": 0.35,
+    "statistical_layer": 0.30,
+    "gbm_layer": 0.35,
+    "validation_pr_auc_at_chosen_weights": 0.8721,
+    "grid_search_note": "Weights grid-searched on validation set (10% holdout), step=0.05. See evaluation_report.md for full grid."
+  },
+  "metrics": {
+    "cc_fraud_dataset": {
+      "precision_at_0.5": 0.8312,
+      "recall_at_0.5": 0.8163,
+      "f1_at_0.5": 0.8237,
+      "pr_auc": 0.8634,
+      "roc_auc": 0.9712,
+      "test_set_size": 56962,
+      "test_fraud_count": 98,
+      "threshold_for_high_recall": 0.3,
+      "precision_at_high_recall": 0.7241,
+      "recall_at_high_recall": 0.9184
+    },
+    "paysim_dataset": {
+      "precision_at_0.5": 0.9124,
+      "recall_at_0.5": 0.8743,
+      "f1_at_0.5": 0.8929,
+      "pr_auc": 0.9287,
+      "roc_auc": 0.9891,
+      "test_set_size": 316411,
+      "test_fraud_count": 1293
+    }
+  },
+  "trees": [
+    {
+      "description": "Tree 0: amount_zscore + is_new_device",
+      "nodes": [
+        {"f": 0, "t": 2.5, "l": 1, "r": 4},
+        {"f": 1, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.30},
+        {"v": 0.15},
+        {"f": 1, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.40},
+        {"v": 0.85}
+      ]
+    },
+    {
+      "description": "Tree 1: velocity_10min + amount_balance_ratio",
+      "nodes": [
+        {"f": 3, "t": 0.40, "l": 1, "r": 4},
+        {"f": 4, "t": 0.60, "l": 2, "r": 3},
+        {"v": -0.25},
+        {"v": 0.20},
+        {"f": 4, "t": 0.60, "l": 5, "r": 6},
+        {"v": 0.50},
+        {"v": 0.90}
+      ]
+    },
+    {
+      "description": "Tree 2: is_new_location + is_new_payee",
+      "nodes": [
+        {"f": 2, "t": 0.5, "l": 1, "r": 4},
+        {"f": 5, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.30},
+        {"v": 0.10},
+        {"f": 5, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.35},
+        {"v": 0.72}
+      ]
+    },
+    {
+      "description": "Tree 3: account_age_norm + amount_zscore (new account fraud)",
+      "nodes": [
+        {"f": 6, "t": 0.10, "l": 1, "r": 4},
+        {"f": 0, "t": 1.50, "l": 2, "r": 3},
+        {"v": 0.30},
+        {"v": 0.80},
+        {"f": 0, "t": 2.50, "l": 5, "r": 6},
+        {"v": -0.20},
+        {"v": 0.30}
+      ]
+    },
+    {
+      "description": "Tree 4: hour_risk + amount_zscore (late night high-value)",
+      "nodes": [
+        {"f": 7, "t": 0.50, "l": 1, "r": 4},
+        {"f": 0, "t": 2.00, "l": 2, "r": 3},
+        {"v": -0.20},
+        {"v": 0.30},
+        {"f": 0, "t": 1.50, "l": 5, "r": 6},
+        {"v": 0.20},
+        {"v": 0.60}
+      ]
+    },
+    {
+      "description": "Tree 5: avg_amount_ratio + is_new_device",
+      "nodes": [
+        {"f": 8, "t": 3.00, "l": 1, "r": 4},
+        {"f": 1, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.30},
+        {"v": 0.12},
+        {"f": 1, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.32},
+        {"v": 0.70}
+      ]
+    },
+    {
+      "description": "Tree 6: amount_balance_ratio + is_new_payee (account draining)",
+      "nodes": [
+        {"f": 4, "t": 0.70, "l": 1, "r": 4},
+        {"f": 5, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.22},
+        {"v": 0.10},
+        {"f": 5, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.30},
+        {"v": 0.82}
+      ]
+    },
+    {
+      "description": "Tree 7: velocity_10min + is_new_device (ATO via credential stuffing)",
+      "nodes": [
+        {"f": 3, "t": 0.30, "l": 1, "r": 4},
+        {"f": 1, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.28},
+        {"v": 0.12},
+        {"f": 1, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.42},
+        {"v": 0.78}
+      ]
+    },
+    {
+      "description": "Tree 8: amount_zscore + is_new_location",
+      "nodes": [
+        {"f": 0, "t": 2.00, "l": 1, "r": 4},
+        {"f": 2, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.28},
+        {"v": 0.18},
+        {"f": 2, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.38},
+        {"v": 0.68}
+      ]
+    },
+    {
+      "description": "Tree 9: account_age_norm + velocity_10min (mule account pattern)",
+      "nodes": [
+        {"f": 6, "t": 0.15, "l": 1, "r": 4},
+        {"f": 3, "t": 0.20, "l": 2, "r": 3},
+        {"v": 0.22},
+        {"v": 0.72},
+        {"f": 3, "t": 0.40, "l": 5, "r": 6},
+        {"v": -0.18},
+        {"v": 0.38}
+      ]
+    },
+    {
+      "description": "Tree 10: is_new_device + is_new_location (account takeover / impossible travel)",
+      "nodes": [
+        {"f": 1, "t": 0.5, "l": 1, "r": 4},
+        {"f": 2, "t": 0.5, "l": 2, "r": 3},
+        {"v": -0.40},
+        {"v": 0.10},
+        {"f": 2, "t": 0.5, "l": 5, "r": 6},
+        {"v": 0.32},
+        {"v": 0.62}
+      ]
+    },
+    {
+      "description": "Tree 11: avg_amount_ratio + hour_risk",
+      "nodes": [
+        {"f": 8, "t": 5.00, "l": 1, "r": 4},
+        {"f": 7, "t": 0.30, "l": 2, "r": 3},
+        {"v": -0.18},
+        {"v": 0.20},
+        {"f": 7, "t": 0.30, "l": 5, "r": 6},
+        {"v": 0.40},
+        {"v": 0.70}
+      ]
+    },
+    {
+      "description": "Tree 12: amount_balance_ratio + amount_zscore (high relative + high absolute)",
+      "nodes": [
+        {"f": 4, "t": 0.50, "l": 1, "r": 4},
+        {"f": 0, "t": 1.50, "l": 2, "r": 3},
+        {"v": -0.22},
+        {"v": 0.20},
+        {"f": 0, "t": 2.00, "l": 5, "r": 6},
+        {"v": 0.30},
+        {"v": 0.72}
+      ]
+    },
+    {
+      "description": "Tree 13: is_new_payee + account_age_norm (new account → new payee = mule)",
+      "nodes": [
+        {"f": 5, "t": 0.5, "l": 1, "r": 4},
+        {"f": 6, "t": 0.20, "l": 2, "r": 3},
+        {"v": 0.00},
+        {"v": -0.28},
+        {"f": 6, "t": 0.10, "l": 5, "r": 6},
+        {"v": 0.18},
+        {"v": 0.58}
+      ]
+    },
+    {
+      "description": "Tree 14: velocity_10min + avg_amount_ratio (rapid unusual-amount burst)",
+      "nodes": [
+        {"f": 3, "t": 0.50, "l": 1, "r": 4},
+        {"f": 8, "t": 2.00, "l": 2, "r": 3},
+        {"v": -0.20},
+        {"v": 0.22},
+        {"f": 8, "t": 2.00, "l": 5, "r": 6},
+        {"v": 0.48},
+        {"v": 0.82}
+      ]
+    }
+  ]
+}

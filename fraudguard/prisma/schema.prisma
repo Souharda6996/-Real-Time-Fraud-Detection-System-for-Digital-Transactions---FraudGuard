@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Decision {
+  APPROVE
+  REVIEW
+  BLOCK
+}
+
+enum PaymentRail {
+  UPI
+  CARD_PRESENT
+  CARD_NOT_PRESENT
+  WALLET
+  NETBANKING
+  OTHER
+}
+
+enum AuditAction {
+  APPROVE       // Analyst manually approved a REVIEW transaction
+  DECLINE       // Analyst declined / confirmed block
+  ESCALATE      // Analyst escalated to senior review
+  WHITELIST     // Admin whitelisted sender
+  BLACKLIST     // Admin blacklisted sender
+}
+
+enum UserRole {
+  VIEWER
+  ANALYST
+  ADMIN
+}
+
+// ─── Transaction ─────────────────────────────────────────────────────────────
+
+model Transaction {
+  id            String      @id @default(uuid())
+  eventId       String      @unique // from TransactionEvent.eventId
+  timestamp     DateTime
+  amount        Float
+  currency      String      @default("INR")
+  rail          PaymentRail @default(OTHER)
+
+  // Hashed identifiers — raw PAN/VPA never stored
+  senderIdHash  String      // sha256(pepper + senderId)
+  receiverIdHash String
+
+  // Scoring results
+  score         Int
+  decision      Decision
+  ruleScore     Int
+  statScore     Int
+  modelScore    Int
+  modelProb     Float       @default(0)
+  latencyMs     Int
+
+  // Top fraud signals (JSON array of reason objects)
+  reasons       Json        @default("[]")
+
+  // Feature values for audit trail
+  features      Json?       // { names: [], values: [] }
+
+  modelVersion  String      @default("v2.0")
+  isSimulated   Boolean     @default(false)
+
+  createdAt     DateTime    @default(now())
+
+  // Relations
+  auditLogs     AuditLog[]
+
+  @@index([senderIdHash])
+  @@index([decision])
+  @@index([createdAt])
+  @@index([timestamp])
+}
+
+// ─── Audit Log ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id            String      @id @default(uuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  analystId     String      // from session.user.id
+  analystEmail  String
+  action        AuditAction
+  notes         String?
+
+  // Snapshot of the score at time of analyst decision
+  scoreAtDecision Int
+  decisionAtReview Decision
+
+  createdAt     DateTime    @default(now())
+
+  @@index([transactionId])
+  @@index([analystId])
+  @@index([createdAt])
+}
+
+// ─── User (for NextAuth + RBAC) ──────────────────────────────────────────────
+// Note: With credentials provider, users are defined in env vars, not DB.
+// This table is used for extended user metadata and audit purposes.
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(VIEWER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

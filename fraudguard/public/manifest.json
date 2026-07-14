@@ -1,0 +1,48 @@
+{
+  "name": "FraudGuard AI",
+  "short_name": "FraudGuard",
+  "description": "Real-time fraud detection powered by Gradient Boosted Trees. Sub-10ms Edge inference.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0A0A0F",
+  "theme_color": "#6D001A",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/screenshot-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "FraudGuard Live Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live Dashboard",
+      "url": "/dashboard",
+      "description": "View live transaction feed"
+    },
+    {
+      "name": "Review Queue",
+      "url": "/dashboard/queue",
+      "description": "Process flagged transactions"
+    }
+  ],
+  "categories": ["finance", "business", "productivity"]
+}

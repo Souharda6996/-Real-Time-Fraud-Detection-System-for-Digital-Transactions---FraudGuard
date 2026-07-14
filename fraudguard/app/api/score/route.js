@@ -1,60 +1,124 @@
 // ============================================================================
-// /app/api/score/route.js
-// Next.js App Router API Route — POST /api/score
-// Calls fraudEngine.js, measures actual latency, returns full scoring result.
-// Runs as a Vercel serverless function (no Python runtime needed).
+// app/api/score/route.js
+// POST /api/score — Main fraud scoring endpoint.
+//
+// Runtime: Edge (fast, no cold start, Upstash Redis is HTTP-based)
+//
+// Request: TransactionEvent object (canonical schema) or legacy txn format
+// Response: { score, decision, reasons, latencyMs, layers, features, ... }
+//
+// Security:
+//   - Zod validation on inbound payload (rejects malformed with 400)
+//   - Rate limiting per source IP using Upstash Redis sliding window
+//   - Velocity tracking per sender (Redis sliding window, 10 min)
+//   - Client-supplied risk fields are never trusted (always recomputed)
 // ============================================================================
+
+export const runtime = 'edge';
 
 import { NextResponse } from 'next/server';
 import { scoreTransaction } from '../../../lib/fraudEngine.js';
-
-// In-memory velocity store (per-user transaction count in last 10 min)
-// Note: In a true production system this would be Redis / Upstash KV
-const velocityStore = new Map();
-
-function getVelocity(userId) {
-  const now = Date.now();
-  const windowMs = 10 * 60 * 1000; // 10 minutes
-  const cutoff = now - windowMs;
-
-  const timestamps = (velocityStore.get(userId) || []).filter(ts => ts > cutoff);
-  timestamps.push(now);
-  velocityStore.set(userId, timestamps);
-  return timestamps.length;
-}
+import { recordAndGetVelocity, checkRateLimit, publishToFeed } from '../../../lib/redis.js';
+import { parseTransactionEvent } from '../../../lib/schema/transactionEvent.js';
+import { hashIdentifier } from '../../../lib/crypto.js';
 
 export async function POST(request) {
-  try {
-    const start = performance.now(); // start BEFORE parsing/scoring
-    const txn = await request.json();
+  const start = performance.now();
 
-    // Validate required fields
-    if (!txn.userId || !txn.amount) {
+  // ── Rate limiting by IP ────────────────────────────────────────────────────
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || 'unknown';
+
+  const rateLimit = await checkRateLimit(`ip:${ip}`);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please slow down.', resetAt: rateLimit.resetAt },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit':     String(30),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset':     String(Math.ceil(rateLimit.resetAt / 1000)),
+          'Retry-After':           String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  // ── Parse request body ─────────────────────────────────────────────────────
+  let rawBody;
+  try {
+    rawBody = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: 'Invalid JSON body' },
+      { status: 400 }
+    );
+  }
+
+  // ── Determine if this is a canonical TransactionEvent or legacy format ─────
+  let txn = rawBody;
+  let senderId;
+
+  const isCanonical = rawBody.eventId && rawBody.rail && rawBody.sender;
+
+  if (isCanonical) {
+    // Validate canonical schema — reject malformed payloads with clear errors
+    const parsed = parseTransactionEvent(rawBody);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Invalid TransactionEvent', details: parsed.errors },
+        { status: 400 }
+      );
+    }
+    txn = parsed.data;
+    senderId = txn.sender.id;
+  } else {
+    // Legacy simulator format — minimal validation
+    if (!rawBody.userId || rawBody.amount == null) {
       return NextResponse.json(
         { error: 'Missing required fields: userId, amount' },
         { status: 400 }
       );
     }
-
-    // Get velocity for this user
-    const velocity = getVelocity(txn.userId);
-
-    // Run the scoring engine (this is where the "ML" happens — pure JS)
-    const result = scoreTransaction(txn, velocity);
-
-    // Attach velocity to result for display
-    result.velocityCount = velocity;
-    result.txnId = txn.id;
-
-    // Attach true measured latency
-    result.latencyMs = +(performance.now() - start).toFixed(1);
-
-    return NextResponse.json(result);
-  } catch (err) {
-    console.error('[/api/score]', err);
-    return NextResponse.json(
-      { error: 'Scoring engine error', detail: err.message },
-      { status: 500 }
-    );
+    // Hash the legacy userId for velocity tracking
+    senderId = await hashIdentifier(rawBody.userId);
+    txn = rawBody;
   }
+
+  // ── Velocity tracking (Upstash Redis sliding window) ──────────────────────
+  const velocity = await recordAndGetVelocity(senderId);
+
+  // ── Score the transaction ─────────────────────────────────────────────────
+  const result = scoreTransaction(txn, velocity);
+
+  result.velocityCount = velocity;
+  result.txnId         = txn.eventId || txn.id;
+  result.latencyMs     = +(performance.now() - start).toFixed(1);
+  result.rateLimit     = {
+    remaining: rateLimit.remaining,
+    resetAt:   rateLimit.resetAt,
+  };
+
+  // ── Publish to live feed (async, non-blocking) ────────────────────────────
+  // Don't await — fire and forget so it doesn't add latency to the response
+  publishToFeed({
+    ...result,
+    txnId:     txn.eventId || txn.id,
+    amount:    txn.amount,
+    currency:  txn.currency || 'INR',
+    rail:      txn.rail || 'OTHER',
+    timestamp: txn.timestamp || new Date().toISOString(),
+    // Sender ID (already hashed) for display
+    senderDisplay: senderId.slice(0, 8) + '…',
+  }).catch(() => {}); // Silently ignore Redis errors on feed broadcast
+
+  return NextResponse.json(result, {
+    headers: {
+      'X-RateLimit-Limit':     String(30),
+      'X-RateLimit-Remaining': String(rateLimit.remaining),
+      'X-RateLimit-Reset':     String(Math.ceil(rateLimit.resetAt / 1000)),
+    },
+  });
 }
